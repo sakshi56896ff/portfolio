@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sakshi</title>
+<meta name="description" content="Portfolio of Sakshi a full-stack developer: React, Node.js, MongoDB and Gemini API projects, experience and skills.">
+<meta name="theme-color" content="#070a14">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Unbounded:wght@300;500&display=swap">
+<style>
+  /* Layout concept: one left-aligned column under a star-trail sky.
+     Projects are rows anchored by a planet each, experience sits on a timeline,
+     skills are drawn as constellations. */
+  :root {
+    --bg: #070a14;
+    --fg: #e6ebf7;
+    --muted: #8d9ab8;
+    --line: #1a2440;
+    --line-strong: #2b3858;
+    --accent: #f0bf6a;
+    --accent-ink: #1a1304;
+    --font-display: "Unbounded", "Trebuchet MS", "Segoe UI", sans-serif;
+    --font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cg fill='%23e6ebf7'%3E%3Ccircle cx='31' cy='58' r='.9' fill-opacity='.55'/%3E%3Ccircle cx='96' cy='301' r='.7' fill-opacity='.4'/%3E%3Ccircle cx='140' cy='120' r='1.1' fill-opacity='.6'/%3E%3Ccircle cx='212' cy='36' r='.7' fill-opacity='.35'/%3E%3Ccircle cx='260' cy='210' r='.9' fill-opacity='.5'/%3E%3Ccircle cx='318' cy='350' r='1' fill-opacity='.45'/%3E%3Ccircle cx='372' cy='90' r='.8' fill-opacity='.5'/%3E%3Ccircle cx='60' cy='395' r='.8' fill-opacity='.4'/%3E%3Ccircle cx='189' cy='262' r='.6' fill-opacity='.35'/%3E%3Ccircle cx='345' cy='214' r='.7' fill-opacity='.4'/%3E%3Ccircle cx='15' cy='188' r='.6' fill-opacity='.35'/%3E%3Ccircle cx='280' cy='400' r='.7' fill-opacity='.4'/%3E%3C/g%3E%3C/svg%3E");
+    color: var(--fg);
+    font: 400 1.0625rem/1.6 var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  .band { width: 100%; }
+  .inner {
+    max-width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(60% 70% at 80% 16%, rgba(240, 191, 106, 0.09), transparent 70%);
+  }
+  .hero canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 140px;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    padding-block: 28px 96px;
+  }
+  .topnav { display: flex; flex-wrap: wrap; gap: 4px 28px; }
+  .topnav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 6px 0;
+  }
+  .topnav a:hover { color: var(--fg); }
+
+  h1 {
+    margin: clamp(72px, 14vw, 150px) 0 0;
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2.75rem, 12vw, 7rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  h1 span { display: block; }
+  .lede {
+    max-width: 34ch;
+    margin: 28px 0 10px;
+    font-size: clamp(1.125rem, 2.4vw, 1.4rem);
+    line-height: 1.45;
+  }
+  .edu { max-width: 52ch; margin: 0 0 32px; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--fg);
+    font: 600 1rem/1.2 var(--font-body);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn:hover { border-color: var(--muted); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { border-color: var(--accent); filter: brightness(1.08); }
+
+  /* ---------- Sections ---------- */
+  .section { padding-block: 72px 24px; }
+  h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .sec-note { margin: 12px 0 0; color: var(--muted); max-width: 56ch; }
+
+  /* ---------- Projects ---------- */
+  .projects { list-style: none; margin: 40px 0 0; padding: 0; }
+  .project {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 28px;
+    padding-block: 36px;
+    border-top: 1px solid var(--line);
+  }
+  .project:last-child { border-bottom: 1px solid var(--line); }
+  .orb { width: 112px; height: 96px; display: grid; place-items: center; }
+  .planet {
+    position: relative;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    box-shadow: inset -16px -12px 26px rgba(0, 0, 0, 0.6), 0 0 44px -10px var(--glow, transparent);
+  }
+  .planet-earth {
+    --glow: #3b86c4;
+    background:
+      radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.32), transparent 30%),
+      radial-gradient(ellipse 30% 20% at 62% 54%, #3f9462, transparent 72%),
+      radial-gradient(ellipse 22% 28% at 34% 62%, #3f9462, transparent 72%),
+      radial-gradient(circle at 40% 35%, #3b86c4, #1a4f86 55%, #0a2548 100%);
+  }
+  .planet-gold {
+    --glow: #d9a54f;
+    background:
+      radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.28), transparent 32%),
+      repeating-linear-gradient(8deg, #d9a54f 0 7px, #c4893a 7px 13px, #e3b86b 13px 18px);
+  }
+  .planet-gold::after {
+    content: "";
+    position: absolute;
+    left: -27%; top: 30%;
+    width: 154%; height: 38%;
+    border: 3px solid rgba(240, 191, 106, 0.6);
+    border-top-color: transparent;
+    border-radius: 50%;
+    transform: rotate(-16deg);
+  }
+  .planet-moon {
+    --glow: #9aa0b4;
+    background:
+      radial-gradient(circle at 62% 60%, rgba(0, 0, 0, 0.22) 0 9%, transparent 10%),
+      radial-gradient(circle at 36% 66%, rgba(0, 0, 0, 0.18) 0 6%, transparent 7%),
+      radial-gradient(circle at 58% 30%, rgba(0, 0, 0, 0.16) 0 5%, transparent 6%),
+      radial-gradient(circle at 30% 28%, #d9dbe3, #9aa0b4 55%, #4b5168 100%);
+  }
+  .project h3 { margin: 0 0 4px; font: 600 1.4rem/1.2 var(--font-body); }
+  .project-meta { margin: 0 0 10px; color: var(--muted); font-size: 0.92rem; }
+  .project p.desc { margin: 0 0 16px; max-width: 62ch; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0 0 18px; padding: 0; }
+  .chips li {
+    font-size: 0.85rem;
+    color: var(--muted);
+    border: 1px solid var(--line-strong);
+    padding: 2px 10px;
+    border-radius: 4px;
+  }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .links a {
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  /* ---------- Experience ---------- */
+  .timeline {
+    list-style: none;
+    margin: 40px 0 0;
+    padding: 0 0 0 30px;
+    border-left: 1px solid var(--line-strong);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .timeline > li { position: relative; min-width: 0; }
+  .timeline > li::before {
+    content: "";
+    position: absolute;
+    left: -35px; top: 0.6em;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 5px rgba(240, 191, 106, 0.12), 0 0 14px rgba(240, 191, 106, 0.55);
+  }
+  .timeline h3 { margin: 0; font: 600 1.25rem/1.3 var(--font-body); }
+  .when { margin: 2px 0 0; color: var(--muted); font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+  .points { margin: 12px 0 0; padding-left: 1.1em; max-width: 64ch; }
+  .points li { margin-bottom: 6px; }
+  .points li::marker { color: var(--muted); }
+  .inline-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--accent);
+    font-weight: 500;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+
+  .two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 48px;
+    margin-top: 64px;
+  }
+  .two h3 { margin: 0 0 8px; font: 600 1.1rem/1.3 var(--font-body); }
+  .rows { list-style: none; margin: 0; padding: 0; }
+  .rows li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .rows li > div { min-width: 0; }
+  .rows small { display: block; color: var(--muted); font-size: 0.9rem; }
+  .rows .yr { color: var(--muted); font-size: 0.92rem; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; }
+
+  /* ---------- Skills ---------- */
+  .skies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 40px;
+    margin-top: 40px;
+  }
+  .sky-block { min-width: 0; }
+  .sky-block h3 { margin: 0 0 4px; font: 600 1.05rem/1.3 var(--font-body); color: var(--muted); }
+  .sky-block svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .sk-line { fill: none; stroke: var(--accent); stroke-opacity: 0.45; stroke-width: 1; }
+  .sk-glow { fill: var(--accent); fill-opacity: 0.12; }
+  .sk-star { fill: var(--fg); }
+  .sk-label {
+    font: 500 13px var(--font-body);
+    fill: var(--fg);
+    paint-order: stroke;
+    stroke: var(--bg);
+    stroke-width: 4px;
+    stroke-linejoin: round;
+  }
+  .also { margin: 28px 0 0; color: var(--muted); max-width: 60ch; }
+
+  /* ---------- Contact ---------- */
+  .contact-email {
+    margin: 28px 0 16px;
+    font: 500 clamp(1.15rem, 4.2vw, 1.9rem)/1.3 var(--font-body);
+    overflow-wrap: anywhere;
+  }
+  .contact-email span { user-select: all; }
+  .copy-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+  .copy-status { color: var(--muted); font-size: 0.92rem; min-height: 1.4em; }
+  .socials { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 32px 0 0; padding: 0; list-style: none; }
+  .socials a { color: var(--accent); font-weight: 500; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  footer { padding-block: 72px 48px; color: var(--muted); font-size: 0.9rem; }
+
+  @media (max-width: 620px) {
+    .project { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .section { padding-top: 56px; }
+    .rows li { flex-direction: column; gap: 2px; }
+    .rows .yr { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<header class="hero band" id="top">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="inner hero-inner">
+    <nav class="topnav" aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <h1><span>Sakshi</span> <span>Sood</span></h1>
+    <p class="lede">Full-stack developer. I build web apps with React, Node.js and MongoDB, and add AI features with the Gemini API.</p>
+    <p class="edu">B.Tech in Computer Science Engineering, Indira Gandhi Delhi Technical University for Women, class of 2026.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#projects">See projects</a>
+      <a class="btn" href="#contact">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="section band" id="projects">
+    <div class="inner">
+      <h2>Projects</h2>
+      <p class="sec-note">Three web apps, each with a live demo and the source on GitHub.</p>
+      <ul class="projects">
+        <li class="project">
+          <div class="orb"><div class="planet planet-earth" aria-hidden="true"></div></div>
+          <div class="project-body">
+            <h3>ReEarth</h3>
+            <p class="project-meta">Team project</p>
+            <p class="desc">A platform for organising environmental cleanups. People create and join events, log the waste they collect, publish blog posts and follow an activity dashboard. Gemini powers the recycling tips.</p>
+            <ul class="chips">
+              <li>React.js</li><li>Node.js</li><li>Express.js</li><li>MongoDB</li><li>Leaflet.js</li><li>Gemini API</li>
+            </ul>
+            <div class="links">
+              <a href="https://reearthfrontend.netlify.app/" target="_blank" rel="noopener noreferrer">Live demo</a>
+              <a href="https://github.com/Sania-Parveen/ReEarth" target="_blank" rel="noopener noreferrer">Source code</a>
+            </div>
+          </div>
+        </li>
+        <li class="project">
+          <div class="orb"><div class="planet planet-gold" aria-hidden="true"></div></div>
+          <div class="project-body">
+            <h3>MoneyMate</h3>
+            <p class="desc">A personal finance tracker with income and expense tracking, category-based analytics and interactive dashboards. Gemini adds short financial tips.</p>
+            <ul class="chips">
+              <li>MongoDB</li><li>Express.js</li><li>React.js</li><li>Node.js</li><li>Gemini API</li>
+            </ul>
+            <div class="links">
+              <a href="https://money-matefrontend.netlify.app/" target="_blank" rel="noopener noreferrer">Live demo</a>
+              <a href="https://github.com/sakshi56896ff/MoneyMate" target="_blank" rel="noopener noreferrer">Source code</a>
+            </div>
+          </div>
+        </li>
+        <li class="project">
+          <div class="orb"><div class="planet planet-moon" aria-hidden="true"></div></div>
+          <div class="project-body">
+            <h3>LaughNav</h3>
+            <p class="desc">A navigation web app that turns pinned map locations into humorous, AI-written travel stories.</p>
+            <ul class="chips">
+              <li>HTML</li><li>JavaScript</li><li>Node.js</li><li>Leaflet.js</li><li>Gemini API</li>
+            </ul>
+            <div class="links">
+              <a href="https://mylaughnav.netlify.app/" target="_blank" rel="noopener noreferrer">Live demo</a>
+              <a href="https://github.com/sakshi56896ff/my_laughNav" target="_blank" rel="noopener noreferrer">Source code</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section band" id="experience">
+    <div class="inner">
+      <h2>Experience</h2>
+      <ul class="timeline">
+        <li>
+          <h3>Full Stack Web Development Intern</h3>
+          <p class="when">Internshala, 2024</p>
+          <ul class="points">
+            <li>Built and deployed a full-stack web application with React, Node.js, Express and MongoDB.</li>
+            <li>Implemented authentication, REST APIs and a responsive interface.</li>
+          </ul>
+          <a class="inline-link" href="https://drive.google.com/file/d/1xuMxw2M6Yo8djwnNYS4z9VJFxAUZemgo/view" target="_blank" rel="noopener noreferrer">View certificate</a>
+        </li>
+        <!-- CadetX entry goes here once role, dates and responsibilities are confirmed -->
+        <li>
+          <h3>Volunteer Mentor</h3>
+          <p class="when">Desk Ke Mentor, 2022</p>
+          <ul class="points">
+            <li>Guided Class 11 and 12 students on career planning and higher education, covering technical and non-technical paths, and shared resources and personal advice.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="two">
+        <div>
+          <h3>Education</h3>
+          <ul class="rows">
+            <li><div>B.Tech in Computer Science Engineering<small>Indira Gandhi Delhi Technical University for Women</small></div><span class="yr">2022 to 2026</span></li>
+            <li><div>Class XII, CBSE<small>SKV Vikaspuri, 89.6%</small></div><span class="yr">2022</span></li>
+            <li><div>Class X, CBSE<small>Adarsh Secondary School, Delhi, 90%</small></div><span class="yr">2020</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Achievements and courses</h3>
+          <ul class="rows">
+            <li><div>HackNsolve<small>Ranked in the top 100 of 1,000 participants</small></div></li>
+            <li><div>NPTEL<small>Completed Consumer Psychology</small></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="skills">
+    <div class="inner">
+      <h2>Skills</h2>
+      <div class="skies">
+        <div class="sky-block"><h3>Web development</h3><div id="sky-web"></div><noscript><p>HTML, CSS, React.js, Node.js, Express.js, MongoDB</p></noscript></div>
+        <div class="sky-block"><h3>Computer science core</h3><div id="sky-core"></div><noscript><p>C++ / C, SQL, DSA, OOPS, OS, DBMS</p></noscript></div>
+      </div>
+      <p class="also">I also bring communication, team management, creativity, problem solving and time management to a team.</p>
+    </div>
+  </section>
+
+  <section class="section band" id="contact">
+    <div class="inner">
+      <h2>Contact</h2>
+      <p class="sec-note">Have a project or an opening in mind? Send me an email.</p>
+      <p class="contact-email"><span id="email-text">sakshisood678@gmail.com</span></p>
+      <div class="copy-row">
+        <button class="btn btn-primary" id="copy-email" type="button">Copy email</button>
+        <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+      </div>
+      <ul class="socials">
+        <li><a href="https://github.com/sakshi56896ff" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/sakshi-66a984258/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="https://leetcode.com/u/sakshisood678/" target="_blank" rel="noopener noreferrer">LeetCode</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="band">
+  <div class="inner">Sakshi Sood, 2026.</div>
+</footer>
+
+<script>
+(function () {
+  /* ---------- Star trails in the hero ---------- */
+  var canvas = document.getElementById('sky');
+  var hero = document.getElementById('top');
+  var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+  if (ctx && hero) {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var w = 0, h = 0, px = 0, py = 0, stars = [];
+    var running = false, visible = true, raf = 0, last = 0;
+    var TINTS = ['230,235,247', '240,191,106', '170,200,255'];
+
+    function size() {
+      var r = hero.getBoundingClientRect();
+      var nw = Math.max(1, Math.round(r.width));
+      var nh = Math.max(1, Math.round(r.height));
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = nw * dpr;
+      canvas.height = nh * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var regen = !stars.length || Math.abs(nw - w) > 30 || Math.abs(nh - h) > 60;
+      w = nw; h = nh;
+      px = w * 0.8; py = h * 0.16;
+      if (regen) populate();
+      draw();
+    }
+
+    function populate() {
+      var maxR = Math.hypot(Math.max(px, w - px), Math.max(py, h - py));
+      var n = Math.min(380, Math.round((w * h) / 2600));
+      stars = [];
+      for (var i = 0; i < n; i++) {
+        var roll = Math.random();
+        stars.push({
+          r: 24 + Math.sqrt(Math.random()) * (maxR - 24),
+          a: Math.random() * Math.PI * 2,
+          len: 0.12 + Math.random() * 0.3,
+          size: 0.5 + Math.random() * 1.1,
+          alpha: 0.25 + Math.random() * 0.6,
+          tint: roll < 0.16 ? TINTS[1] : roll < 0.32 ? TINTS[2] : TINTS[0]
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        ctx.beginPath();
+        ctx.arc(px, py, s.r, s.a - s.len, s.a);
+        ctx.lineWidth = s.size;
+        ctx.strokeStyle = 'rgba(' + s.tint + ',' + (s.alpha * 0.45).toFixed(3) + ')';
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(px + s.r * Math.cos(s.a), py + s.r * Math.sin(s.a), s.size * 0.9, 0, 6.2832);
+        ctx.fillStyle = 'rgba(' + s.tint + ',' + s.alpha.toFixed(3) + ')';
+        ctx.fill();
+      }
+    }
+
+    function tick(t) {
+      if (!running) return;
+      var dt = Math.min(64, t - last);
+      last = t;
+      for (var i = 0; i < stars.length; i++) stars[i].a += dt * 0.000035;
+      draw();
+      raf = requestAnimationFrame(tick);
+    }
+    function start() {
+      if (reduce || running || !visible || document.hidden) return;
+      running = true;
+      last = performance.now();
+      raf = requestAnimationFrame(tick);
+    }
+    function stop() { running = false; cancelAnimationFrame(raf); }
+
+    size();
+    var resizeTimer = 0;
+    if (window.ResizeObserver) {
+      new ResizeObserver(function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(size, 150);
+      }).observe(hero);
+    } else {
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(size, 150);
+      });
+    }
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        if (visible) start(); else stop();
+      }).observe(hero);
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop(); else start();
+    });
+    start();
+  }
+
+  /* ---------- Skill constellations ---------- */
+  var SKIES = [
+    { target: 'sky-web', label: 'Web development skills', shape: 'zigzag',
+      items: ['HTML', 'CSS', 'React.js', 'Node.js', 'Express.js', 'MongoDB'] },
+    { target: 'sky-core', label: 'Computer science core skills', shape: 'arch',
+      items: ['C++ / C', 'SQL', 'DSA', 'OOPS', 'OS', 'DBMS'] }
+  ];
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(name, attrs, text) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  SKIES.forEach(function (sk) {
+    var host = document.getElementById(sk.target);
+    if (!host) return;
+    var W = 360, H = 190, x0 = 46, x1 = 314, n = sk.items.length;
+    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': sk.label + ': ' + sk.items.join(', ') });
+    var pts = sk.items.map(function (name, i) {
+      var x = x0 + (i * (x1 - x0)) / (n - 1);
+      var y = sk.shape === 'zigzag' ? (i % 2 === 0 ? 64 : 128) : 130 - 62 * Math.sin((Math.PI * i) / (n - 1));
+      var above = sk.shape === 'zigzag' ? i % 2 === 0 : false;
+      return { name: name, x: x, y: y, above: above };
+    });
+    svg.appendChild(el('polyline', { class: 'sk-line', points: pts.map(function (p) { return p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' ') }));
+    pts.forEach(function (p) {
+      svg.appendChild(el('circle', { class: 'sk-glow', cx: p.x.toFixed(1), cy: p.y.toFixed(1), r: 9 }));
+      svg.appendChild(el('circle', { class: 'sk-star', cx: p.x.toFixed(1), cy: p.y.toFixed(1), r: 3.4 }));
+      svg.appendChild(el('text', { class: 'sk-label', x: p.x.toFixed(1), y: (p.above ? p.y - 15 : p.y + 24).toFixed(1), 'text-anchor': 'middle' }, p.name));
+    });
+    host.appendChild(svg);
+  });
+
+  /* ---------- Copy email ---------- */
+  var btn = document.getElementById('copy-email');
+  var out = document.getElementById('copy-status');
+  var emailEl = document.getElementById('email-text');
+  var timer = 0;
+  if (btn && out && emailEl) {
+    btn.addEventListener('click', function () {
+      var text = emailEl.textContent.trim();
+      function fallback() {
+        try {
+          var range = document.createRange();
+          range.selectNodeContents(emailEl);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        } catch (e) {}
+        out.textContent = 'Email selected. Press Ctrl+C or Cmd+C to copy.';
+      }
+      try {
+        navigator.clipboard.writeText(text).then(function () {
+          out.textContent = 'Email copied';
+        }, fallback);
+      } catch (e) { fallback(); }
+      clearTimeout(timer);
+      timer = setTimeout(function () { out.textContent = ''; }, 3000);
+    });
+  }
+})();
+</script>
+</body>
+</html>
